@@ -54,7 +54,7 @@ class ViewController: UIViewController {
                     if (currentText == "") {
                         return
                     }
-                    if (isFirstNumber == false) {
+                    if (isOnFirst == false && secondNumberText != "") {
                         if ((Double(secondNumberText)! == 0 && op == "/") || firstNumberText == "Error"){
                             resultsLabel.text = "Error"
                             firstNumberText = "Error"
@@ -63,14 +63,17 @@ class ViewController: UIViewController {
                             resultsLabel.text = "\(result)"
                             firstNumberText = "\(result)"
                         }
-                        secondNumberText = ""
                     }
+                    secondNumberText = ""
                     op = text
                     isFirstNumber = false
                     hasDot = false
 //                    resultsLabel.text = "\(currentText) \(op)"
                     break
                 case "+/-":
+                    if (currentText == "Error") {
+                        return
+                    }
                     if (isOnFirst == false) {
                         if (secondNumberText[secondNumberText.startIndex] != "-") {
                             secondNumberText.insert("-", at: secondNumberText.startIndex)
@@ -90,7 +93,11 @@ class ViewController: UIViewController {
                     }
                     break
                 case "=":
-                    if ((Double(secondNumberText)! == 0 && op == "/") || firstNumberText == "Error"){
+                    if (secondNumberText == "") {
+                        return
+                    }
+                    if ((Double(secondNumberText)! == 0 && op == "/") ||
+                        firstNumberText == "Error"){
                         resultsLabel.text = "Error"
                         firstNumberText = "Error"
                     } else {
@@ -101,7 +108,7 @@ class ViewController: UIViewController {
                     }
                     break
                 case "%":
-                    if (currentText != "") {
+                    if (currentText != "" && currentText != "Error") {
                         var temp = Double(currentText)!
                         temp = temp/100
                         resultsLabel.text = "\(currentText)"
